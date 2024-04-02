@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
 import "bootstrap/dist/css/bootstrap.min.css";
+
+// css file import
+import "../css/Style.css";
+
 const Form = ({
   handleSubmit,
   taskName,

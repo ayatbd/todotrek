@@ -5,6 +5,11 @@ import { useState } from "react";
 import Form from "../Form/Form";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../redux/features/todoSlice";
+import TaskList from "../TaskList/TaskList";
+
+// css file import
+import "../css/Style.css";
+
 const Main = () => {
   const [taskName, setTaskName] = useState("");
   const [taskPriority, setTaskPriority] = useState("Low");
@@ -30,7 +35,14 @@ const Main = () => {
 
     dispatch(addTodo(newTask));
 
-    // Clear form inputs after submission
+    // data setting method to local storage
+
+    const existingTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    const updatedTasks = [...existingTasks, newTask];
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
     setTaskName("");
     setTaskPriority("Low");
 
@@ -80,6 +92,7 @@ const Main = () => {
                   taskName={taskName}
                   taskPriority={taskPriority}
                 />
+                <TaskList handleSubmit={handleSubmit} />
               </div>
             </div>
           </div>

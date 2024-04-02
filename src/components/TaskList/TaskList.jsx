@@ -5,11 +5,15 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { toast } from "react-toastify";
 
+// css file import
+import "../css/Style.css";
+
 const TaskList = ({ handleSubmit }) => {
-  //Create state variable to store tasks
   const [tasks, setTasks] = useState([]);
 
-  //Use useEffect to fetch tasks from local storage
+  // console.log(tasks);
+
+  //useEffect to fetch tasks from local storage
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
     setTasks(storedTasks);
@@ -26,11 +30,10 @@ const TaskList = ({ handleSubmit }) => {
       progress: undefined,
       theme: "colored",
     });
-    // Remove the task from the tasks array
+
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
 
-    // Save the updated tasks to local storage
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   };
 
@@ -57,7 +60,7 @@ const TaskList = ({ handleSubmit }) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {getSortedTasks().map((task, index) => (
+                      {tasks.map((task, index) => (
                         <tr className="fw-normal" key={index}>
                           <td className="align-middle">
                             <div className="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
@@ -72,75 +75,16 @@ const TaskList = ({ handleSubmit }) => {
                             </div>
                           </td>
                           <td className="align-middle">
-                            {editingIndex === index ? (
-                              <input
-                                type="text"
-                                className="form-control"
-                                value={task.name}
-                                onChange={(e) => {
-                                  const updatedTasks = tasks.map((t, i) =>
-                                    i === index
-                                      ? { ...t, name: e.target.value }
-                                      : t
-                                  );
-                                  setTasks(updatedTasks);
-                                }}
-                              />
-                            ) : (
-                              <span>{task.name}</span>
-                            )}
+                            <span>{task.name}</span>
                           </td>
+                          <td className="align-middle">{task.priority}</td>
                           <td className="align-middle">
-                            {editingIndex === index ? (
-                              <select
-                                className="form-select"
-                                value={task.priority}
-                                onChange={(e) => {
-                                  const updatedTasks = tasks.map((t, i) =>
-                                    i === index
-                                      ? { ...t, priority: e.target.value }
-                                      : t
-                                  );
-                                  setTasks(updatedTasks);
-                                }}
-                              >
-                                <option value="Low">Low</option>
-                                <option value="Medium">Medium</option>
-                                <option value="High">High</option>
-                              </select>
-                            ) : (
-                              <h6 className="mb-0">
-                                <span
-                                  className={`badge ${
-                                    (task.priority === "High" && "bg-danger") ||
-                                    (task.priority === "Medium" &&
-                                      "bg-warning") ||
-                                    (task.priority === "Low" && "bg-success")
-                                  }`}
-                                >
-                                  {task.priority}
-                                </span>
-                              </h6>
-                            )}
-                          </td>
-                          <td className="align-middle">
-                            {editingIndex === index ? (
-                              <span
-                                className="text-success me-3"
-                                style={{ cursor: "pointer" }}
-                                onClick={() => handleSave(index)}
-                              >
-                                Save
-                              </span>
-                            ) : (
-                              <span
-                                className="text-info me-3"
-                                style={{ cursor: "pointer" }}
-                                onClick={() => handleEdit(index)}
-                              >
-                                <MdEdit size="20" />
-                              </span>
-                            )}
+                            <span
+                              className="text-info me-3"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <MdEdit size="20" />
+                            </span>
                             <span
                               className="text-warning"
                               style={{ cursor: "pointer" }}
