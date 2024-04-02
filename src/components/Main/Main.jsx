@@ -14,7 +14,7 @@ const Main = () => {
   const [taskName, setTaskName] = useState("");
   const [taskPriority, setTaskPriority] = useState("Low");
 
-  //Create event handlers
+  //create event handlers
   const handleTaskNameChange = (e) => {
     setTaskName(e.target.value);
   };
@@ -25,6 +25,7 @@ const Main = () => {
 
   const dispatch = useDispatch();
 
+  // handleSubmit for submitting form data
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -41,12 +42,14 @@ const Main = () => {
 
     const updatedTasks = [...existingTasks, newTask];
 
+    // save the updated data to local storage
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
+    // reset the form after data submission
     setTaskName("");
     setTaskPriority("Low");
 
-    // Display success toast notification
+    // success toast notification
     toast.success("Task added successfully", {
       position: "top-center",
       autoClose: 5000,

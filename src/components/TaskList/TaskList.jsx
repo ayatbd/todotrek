@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
+
+// react icon
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
+
+// react toastify
 import { toast } from "react-toastify";
 
 // css file import
@@ -19,6 +23,7 @@ const TaskList = ({ handleSubmit }) => {
     setTasks(storedTasks);
   }, [handleSubmit]);
 
+  // delete task from local storage and rerender the tasks
   const handleDelete = (index) => {
     toast.warn("The task is deleted", {
       position: "top-center",
@@ -34,6 +39,23 @@ const TaskList = ({ handleSubmit }) => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
 
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
+
+  // check box marking to select completed task and updating local storage
+  const handleToggleCompletion = (index) => {
+    const updatedTasks = tasks.map((task, i) => {
+      if (i === index) {
+        return { ...task, completed: !task.completed };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+    updateLocalStorage(updatedTasks);
+  };
+
+  const updateLocalStorage = (updatedTasks) => {
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   };
 
@@ -70,6 +92,7 @@ const TaskList = ({ handleSubmit }) => {
                                   type="checkbox"
                                   aria-label="..."
                                   checked={task.completed}
+                                  onChange={() => handleToggleCompletion(index)}
                                 />
                               </div>
                             </div>
