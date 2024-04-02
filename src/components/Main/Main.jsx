@@ -3,6 +3,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import Form from "../Form/Form";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../../redux/features/todoSlice";
 const Main = () => {
   const [taskName, setTaskName] = useState("");
   const [taskPriority, setTaskPriority] = useState("Low");
@@ -16,18 +18,23 @@ const Main = () => {
     setTaskPriority(e.target.value);
   };
 
+  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //Save data to local storage
     const newTask = {
-      id: new Date().getTime(),
       name: taskName,
       priority: taskPriority,
     };
 
-    console.log(newTask);
+    dispatch(addTodo(newTask));
 
+    // Clear form inputs after submission
+    setTaskName("");
+    setTaskPriority("Low");
+
+    // Display success toast notification
     toast.success("Task added successfully", {
       position: "top-center",
       autoClose: 5000,
